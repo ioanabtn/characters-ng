@@ -1,0 +1,15 @@
+i {
+    padding: 1rem;
+}
+
+i.fa.fa-trash::before, i.fa.fa-edit::before {
+    cursor: pointer;
+}
+
+.iw-centered {
+    text-align: center;
+}
+
+form {
+    margin: 1rem;
+}

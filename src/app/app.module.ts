@@ -1,16 +1,42 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryStoreService } from 'src/api/in-memory-store.service';
+import { HttpErrorInterceptor } from './shared/http-error.interceptor';
+import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from './app-routing.module';
+import { UsersModule } from './users/users.module';
 
+const routes = [
+  { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: 'home' }
+];
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
+    InMemoryWebApiModule.forRoot(InMemoryStoreService),
+    BrowserAnimationsModule,
+    UsersModule,
+    RouterModule.forRoot(routes),
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
