@@ -10,22 +10,37 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-3">Name:</div>
-                    <div class="col-md-6">{{character.name}}</div>
+                    <div class="col-md-6"
+                    style="max-height:100px;padding-bottom:10px;"
+                    >{{character.name}}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">Side:</div>
-                    <div class="col-md-6">{{character.side}}</div>
+                    <div class="col-md-6">
+                            <div *ngIf="character.side == 'dark' ">
+                                    <img src="./assets/images/dark.png" class="img-responsive center-block"
+                                    style="max-height:100px;padding-bottom:10px" 
+                                    title='dark'/>
+                                </div>
+                                <div *ngIf="character.side == 'light'">
+                                    <img src="./assets/images/light.png" class="img-responsive center-block"
+                                    style="max-height:100px;padding-bottom:10px" 
+                                    title='light'/>
+                                </div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <!-- <div *ngIf="character.side == 'dark' ">
-                    <i class="fa fa-moon"></i>
+                    <img src="./assets/images/dark.png" class="img-responsive center-block"
+                    style="max-height:300px;padding-bottom:50px" />
                 </div>
                 <div *ngIf="character.side == 'light'">
-                    <i class="fa fa-moon"></i>
+                    <img src="./assets/images/light.png" class="img-responsive center-block"
+                    style="max-height:300px;padding-bottom:50px" />
                 </div> -->
-                <i class="fas fa-moon"></i>
+                
             </div>
         </div>
 
@@ -35,9 +50,12 @@
                     queryParamsHandling="preserve">
                     <i class="fa fa-chevron-left"></i> Back
                 </button>
-                <!-- <button class="btn btn-outline-primary" style="width:80px" [routerLink]="['edit']">
+                <button class="btn btn-outline-primary" style="width:80px" (click)="openDialog(character)">
                     Edit
-                </button> -->
+                </button>
+                <button class="btn btn-outline-primary" style="width:80px; border-color: red; color: red" (click)="openDialog(character)">
+                        Delete
+                </button>
             </div>
         </div>
 

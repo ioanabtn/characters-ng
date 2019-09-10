@@ -1,3 +1,8 @@
-.i {
-    background-color: black
+.row {
+    padding: 0.5rem;
 }
+
+.col-md-6 {
+    font-weight: 200;
+}
+
