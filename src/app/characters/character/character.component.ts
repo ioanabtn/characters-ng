@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { CharactersStoreService } from 'src/app/store/characters-store.service';
 import { ModalComponent } from 'src/app/modal/modal.component';
 import { map } from 'rxjs/operators';
+import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   templateUrl: './character.component.html',
@@ -35,7 +36,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   onBack(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/characters']);
   }
 
   ngOnDestroy(): void {
@@ -54,6 +55,31 @@ export class CharacterComponent implements OnInit, OnDestroy {
           if (updatedCharacter) {
             this.character = updatedCharacter;
             this.subscription.add(this.characterService.updateCharacter(updatedCharacter)
+              .subscribe({
+                error: err => this.errorMessage = err
+              })
+            );
+          }
+        })
+      ).subscribe({
+        error: err => this.errorMessage = err
+      })
+    );
+  }
+
+  delete(character: ICharacter): void {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      width: '50%',
+      data: { id: character.id, name: character.name, side: character.side }
+    });
+
+    this.subscription.add(dialogRef.afterClosed()
+      .pipe(
+        map(toDeleteCharacter => {
+          if (toDeleteCharacter) {
+            this.charactersStore.removeCharacter(character.id);
+            this.onBack();
+            this.subscription.add(this.characterService.deleteCharacter(character)
               .subscribe({
                 error: err => this.errorMessage = err
               })
