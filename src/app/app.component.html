@@ -1,17 +1,20 @@
 <nav class='navbar navbar-expand navbar-light bg-light'>
   <a class='navbar-brand'>{{pageTitle}}</a>
-  <ul class='nav nav-pills'>
-    <li><a class='nav-link' [routerLink]="['/home']">Home</a></li>
-    <li><a class='nav-link' [routerLink]="['/characters']">Character List</a></li>
-  </ul>
+  <div class="nav nav-pills dropdown">
+    <button class="btn ">Menu</button>
+    <div class="dropdown-content">
+      <a class='nav-link' [routerLink]="['/home']">Home</a>
+      <a class='nav-link' [routerLink]="['/characters']">Character List</a>
+    </div>
+  </div>
   <ul class='navbar-nav ml-auto'>
     <li class='nav-item' *ngIf='isLoggedIn'>
       <a class='nav-link'>
         Welcome, {{userName}}
       </a>
     </li>
-    <li  *ngIf='!isLoggedIn' class='nav-item'><a class='nav-link' [routerLink]="['/login']">Log In</a></li>
-    <li  *ngIf='isLoggedIn' class='nav-item'><a class='nav-link' (click)="logOut()">Log Out</a></li>
+    <li *ngIf='!isLoggedIn' class='nav-item'><a class='nav-link' [routerLink]="['/login']">Log In</a></li>
+    <li *ngIf='isLoggedIn' class='nav-item'><a class='nav-link' (click)="logOut()">Log Out</a></li>
   </ul>
 </nav>
 <div class='container'>

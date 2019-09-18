@@ -2,65 +2,41 @@
     <div class="card-header">
         {{pageTitle}}
     </div>
-
     <div class="card-body" *ngIf="character">
-
         <div class="row">
-
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-3">Name:</div>
-                    <div class="col-md-6"
-                    style="max-height:100px;padding-bottom:10px;"
-                    >{{character.name}}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">Side:</div>
-                    <div class="col-md-6">
-                            <div *ngIf="character.side == 'dark' ">
-                                    <img src="./assets/images/dark.png" class="img-responsive center-block"
-                                    style="max-height:100px;padding-bottom:10px" 
-                                    title='dark'/>
-                                </div>
-                                <div *ngIf="character.side == 'light'">
-                                    <img src="./assets/images/light.png" class="img-responsive center-block"
-                                    style="max-height:100px;padding-bottom:10px" 
-                                    title='light'/>
-                                </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <!-- <div *ngIf="character.side == 'dark' ">
-                    <img src="./assets/images/dark.png" class="img-responsive center-block"
-                    style="max-height:300px;padding-bottom:50px" />
+            <div class="col-md-6 text-center">Name:</div>
+            <div class="col-md-3 text-center">{{character.name}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">Side:</div>
+            <div class="col-md-3">
+                <div *ngIf="character.side == 'dark' ">
+                    <img src="./assets/images/dark.png" class="rounded mx-auto d-block"
+                        style="max-height:100px;padding-bottom:10px" title='dark' />
                 </div>
                 <div *ngIf="character.side == 'light'">
-                    <img src="./assets/images/light.png" class="img-responsive center-block"
-                    style="max-height:300px;padding-bottom:50px" />
-                </div> -->
-                
+                    <img src="./assets/images/light.png" class="rounded mx-auto d-block"
+                        style="max-height:100px;padding-bottom:10px" title='light' />
+                </div>
             </div>
         </div>
-
-        <div class="row mt-4">
+        <hr>
+        <div class="row actions text-center">
             <div class="col-md-4">
-                <button class="btn btn-outline-secondary mr-3" style="width:80px" [routerLink]="['/characters']"
-                    queryParamsHandling="preserve">
+                <button class="btn btn-outline-secondary" [routerLink]="['/characters']" queryParamsHandling="preserve">
                     <i class="fa fa-chevron-left"></i> Back
                 </button>
-                <button class="btn btn-outline-primary" style="width:80px" (click)="openDialog(character)">
-                    Edit
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary" (click)="openDialog(character)">
+                    <i class="fa fa-edit"></i> Edit
                 </button>
-                <button class="btn btn-outline-primary" style="width:80px; margin: 15px; border-color: red; color: red" (click)="delete(character)">
-                        Delete
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-danger" (click)="delete(character)">
+                    <i class="fa fa-trash"></i> Delete
                 </button>
             </div>
         </div>
-
     </div>
 </div>
-
-<!-- <div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}} -->
-<!-- </div> -->

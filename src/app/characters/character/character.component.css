@@ -6,3 +6,10 @@
     font-weight: 200;
 }
 
+@media (min-width: 768px) {
+    .row {
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+    }
+}
