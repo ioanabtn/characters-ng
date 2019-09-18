@@ -12,10 +12,6 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UsersModule } from './users/users.module';
 
-const routes = [
-  { path: 'home', component: HomeComponent },
-  { path: '**', redirectTo: 'home' }
-];
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +23,6 @@ const routes = [
     InMemoryWebApiModule.forRoot(InMemoryStoreService),
     BrowserAnimationsModule,
     UsersModule,
-    RouterModule.forRoot(routes),
     AppRoutingModule
   ],
   providers: [

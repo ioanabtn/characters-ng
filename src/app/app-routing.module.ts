@@ -4,14 +4,13 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
 const routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   {
     path: '',
     loadChildren: () =>
       import('./characters/character.module').then(m => m.CharacterModule)
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
