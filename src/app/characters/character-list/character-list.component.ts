@@ -60,7 +60,6 @@ export class CharacterListComponent implements OnInit, OnDestroy {
 
   deleteCharacter(character: ICharacter): void {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      width: '50%',
       data: { id: character.id, name: character.name, side: character.side }
     });
 
@@ -84,7 +83,6 @@ export class CharacterListComponent implements OnInit, OnDestroy {
 
   openDialog(character: ICharacter): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      width: '50%',
       data: { id: character.id, name: character.name, side: character.side }
     });
 

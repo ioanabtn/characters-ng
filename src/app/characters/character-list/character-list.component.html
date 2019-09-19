@@ -12,9 +12,7 @@
                 </div>
                 <div class="form-group">
                     <label for="side">Side</label>
-                    <!-- <input #characterSide type="text" class="form-control" id="side" placeholder="dark or light"> -->
-                    <select class="form-control" id="side" required
-                        [(ngModel)] ="selectedSide" name="side">
+                    <select class="form-control" id="side" required [(ngModel)]="selectedSide" name="side">
                         <option *ngFor="let side of sides" [ngValue]="side">{{side}}</option>
                     </select>
                 </div>
@@ -37,7 +35,7 @@
                     <tr *ngFor='let character of charactersStore.characters'>
                         <td>
                             <a [routerLink]="['/characters', character.id]">
-                                    {{ character.name}}
+                                {{character.name}}
                             </a>
                         </td>
                         <td>{{ character.side }}</td>
