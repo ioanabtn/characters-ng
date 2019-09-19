@@ -21,6 +21,18 @@ export class CharacterListComponent implements OnInit, OnDestroy {
   private selectedSide: Side;
   private subscription: Subscription = new Subscription();
 
+  filteredCharacters: ICharacter[] = [];
+
+  _listFilter = '';
+  get listFilter(): string {
+    return this._listFilter;
+  }
+
+  set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredCharacters = this.listFilter ? this.performFilter(this.listFilter) : this.charactersStore.characters;
+  }
+
 
   constructor(
     private characterService: CharacterService,
@@ -33,6 +45,7 @@ export class CharacterListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(this.characterService.getCharacters().subscribe({
       next: characters => {
+        this.filteredCharacters = characters;
         this.charactersStore.characters = characters;
       },
       error: err => this.errorMessage = err
@@ -40,6 +53,11 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     );
   }
 
+  performFilter(filterBy: string): ICharacter[] {
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.charactersStore.characters.filter((character: ICharacter) =>
+      character.name.toLocaleLowerCase().indexOf(filterBy) !== -1);
+  }
 
   addCharacter(characterName: string): void {
     characterName = characterName.trim();

@@ -22,6 +22,20 @@
                 </button>
             </form>
         </div>
+        <hr>
+        <div class='row'>
+            <div class='col-md-2'>
+                Filter by:
+            </div>
+            <div class='col-md-4'>
+                <input type='text' [(ngModel)]='listFilter' />
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-6'>
+                <h4>Filtered by: {{ listFilter }}</h4>
+            </div>
+        </div>
         <div class='table-responsive'>
             <table class='table' *ngIf="charactersStore.characters && charactersStore.characters.length">
                 <thead>
@@ -32,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="charactersStore.characters$">
-                    <tr *ngFor='let character of charactersStore.characters'>
+                    <tr *ngFor='let character of filteredCharacters'>
                         <td>
                             <a [routerLink]="['/characters', character.id]">
                                 {{character.name}}
