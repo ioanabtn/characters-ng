@@ -14,11 +14,11 @@ import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialo
   styleUrls: ['./character.component.css']
 })
 export class CharacterComponent implements OnInit, OnDestroy {
-  pageTitle: string ='Character details';
+  pageTitle: string = 'Character details';
   character: ICharacter;
   private subscription: Subscription = new Subscription();
   errorMessage: string = '';
-  
+
   constructor(
     private route: ActivatedRoute,
     private characterService: CharacterService,
@@ -27,12 +27,17 @@ export class CharacterComponent implements OnInit, OnDestroy {
     public charactersStore: CharactersStoreService) { }
 
   ngOnInit(): void {
-    let id = +this.route.snapshot.paramMap.get('id');
-    this.subscription.add(this.characterService.getCharacter(id)
-      .subscribe({
-        next: character => this.character = character
-      })
-    );
+    // let id = +this.route.snapshot.paramMap.get('id'); or
+    this.subscription.add(this.route.paramMap.
+      subscribe(params => {
+          const id = +params.get('id');
+          this.subscription.add(this.characterService.getCharacter(id)
+            .subscribe({
+              next: character => this.character = character
+            })
+          );
+        })
+      );
   }
 
   onBack(): void {
@@ -45,7 +50,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   openDialog(character: ICharacter): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      width: '50%',
       data: { id: character.id, name: character.name, side: character.side }
     });
 
@@ -69,7 +73,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   delete(character: ICharacter): void {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      width: '50%',
       data: { id: character.id, name: character.name, side: character.side }
     });
 
@@ -78,12 +81,12 @@ export class CharacterComponent implements OnInit, OnDestroy {
         map(toDeleteCharacter => {
           if (toDeleteCharacter) {
             this.charactersStore.removeCharacter(character.id);
-            this.onBack();
             this.subscription.add(this.characterService.deleteCharacter(character)
               .subscribe({
                 error: err => this.errorMessage = err
               })
             );
+            this.onBack();
           }
         })
       ).subscribe({
@@ -91,5 +94,5 @@ export class CharacterComponent implements OnInit, OnDestroy {
       })
     );
   }
-   
+
 }
