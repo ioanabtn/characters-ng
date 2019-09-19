@@ -30,14 +30,14 @@ export class CharacterComponent implements OnInit, OnDestroy {
     // let id = +this.route.snapshot.paramMap.get('id'); or
     this.subscription.add(this.route.paramMap.
       subscribe(params => {
-          const id = +params.get('id');
-          this.subscription.add(this.characterService.getCharacter(id)
-            .subscribe({
-              next: character => this.character = character
-            })
-          );
-        })
-      );
+        const id = +params.get('id');
+        this.subscription.add(this.characterService.getCharacter(id)
+          .subscribe({
+            next: character => this.character = character
+          })
+        );
+      })
+    );
   }
 
   onBack(): void {
@@ -93,6 +93,20 @@ export class CharacterComponent implements OnInit, OnDestroy {
         error: err => this.errorMessage = err
       })
     );
+  }
+
+  addLine(newLine: string) {
+    if (!newLine) {
+      return
+    }
+    this.character.lines = [
+      ...this.character.lines,
+      newLine
+    ];
+  }
+
+  deleteLine(oldLine: string) {
+    this.character.lines = this.character.lines.filter(line => oldLine !== line);
   }
 
 }

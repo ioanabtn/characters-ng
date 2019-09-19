@@ -5,11 +5,29 @@
 .col-md-6 {
     font-weight: 200;
 }
+ i.fa::before {
+     cursor: pointer;
+ }
+ #deleteLine {
+    margin: 10px;
+ }
 
 @media (min-width: 768px) {
     .row {
         margin: auto;
-        width: 60%;
+        width: 70%;
         padding: 10px;
+    }
+    #add-line, #input-line{
+        width: 100%;
+        padding: 0px;
+    }
+
+    textarea, #plus-icon  {
+        position: relative;
+        display: block;
+        padding: .75rem 1.25rem;
+        margin-bottom: -1px;
+        background-color: #fff;
     }
 }
