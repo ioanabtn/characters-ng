@@ -88,6 +88,7 @@ export class CharacterListComponent implements OnInit, OnDestroy {
         map(toDeleteCharacter => {
           if (toDeleteCharacter) {
             this.charactersStore.removeCharacter(character.id);
+            this.filteredCharacters = this.charactersStore.characters;
             this.subscription.add(this.characterService.deleteCharacter(character)
               .subscribe({
                 error: err => this.errorMessage = err
