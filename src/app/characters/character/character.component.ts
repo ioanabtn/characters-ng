@@ -98,10 +98,15 @@ export class CharacterComponent implements OnInit, OnDestroy {
     if (!newLine) {
       return
     }
-    this.character.lines = [
-      ...this.character.lines,
-      newLine
-    ];
+    if (this.character.lines && this.character.lines.length) {
+      this.character.lines = [
+        ...this.character.lines,
+        newLine
+      ];
+    } else {
+      this.character.lines = [newLine];
+    }
+    
   }
 
   deleteLine(oldLine: string) {
