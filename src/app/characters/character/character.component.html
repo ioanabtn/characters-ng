@@ -3,48 +3,15 @@
         {{pageTitle}}
     </div>
     <div class="card-body" *ngIf="character">
-        <div class="row">
-            <div class="col-md-6 text-center">Name:</div>
-            <div class="col-md-3 text-center">{{character.name}}</div>
+        <div class="wizard">
+            <a [routerLink]="['info']" routerLinkActive="active">
+                Basic Information
+            </a>
+            <a [routerLink]="['lines']" routerLinkActive="active">
+                Lines
+            </a>
         </div>
-        <div class="row">
-            <div class="col-md-6 text-center">Side:</div>
-            <div class="col-md-3">
-                <div *ngIf="character.side.toString()  == 'dark' ">
-                    <img src="./assets/images/dark.png" class="rounded mx-auto d-block"
-                        style="max-height:100px;padding-bottom:10px" title='dark' />
-                </div>
-                <div *ngIf="character.side.toString() == 'light'">
-                    <img src="./assets/images/light.png" class="rounded mx-auto d-block"
-                        style="max-height:100px;padding-bottom:10px" title='light' />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 text-center">Lines:</div>
-            <div class="col-md-6">
-                <ul class="list-group" *ngIf="character.lines && character.lines.length">
-                    <li *ngFor="let line of character.lines" class="list-group-item">
-                        <i>{{line}}</i> <i class="fa fa-trash fa-lg" id="deleteLine" aria-hidden="true"
-                            (click)='deleteLine(line)'></i>
-                    </li>
-                </ul>
-                <div class="row" id="add-line">
-                    <div class="col-md-10" id="input-line">
-                        <div class="form-group">
-                            <textarea #newLine class="form-control" id="exampleFormControlTextarea1" rows="1"
-                                placeholder="Add a new line"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-2" id="plus-icon">
-                        <i class="fa fa-plus fa-lg" aria-hidden="true"
-                            (click)="addLine(newLine.value); newLine.value=''"></i>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+        <router-outlet></router-outlet>
         <hr>
         <div class="row actions text-center">
             <div class="col-md-4 mt-1">

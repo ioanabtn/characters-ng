@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="list-group" *ngIf="lines && lines.length">
+            <li *ngFor="let line of lines" class="list-group-item">
+                <i>{{line}}</i> <i class="fa fa-trash fa-lg" id="deleteLine" aria-hidden="true"
+                    (click)='deleteLine(line)'></i>
+            </li>
+        </ul>
+        <div class="row" id="add-line">
+            <div class="col-md-10" id="input-line">
+                <div class="form-group">
+                    <textarea #newLine class="form-control" id="exampleFormControlTextarea1" rows="1"
+                        placeholder="Add a new line"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2" id="plus-icon">
+                <i class="fa fa-plus fa-lg" aria-hidden="true" (click)="addLine(newLine.value); newLine.value=''"></i>
+            </div>
+        </div>
+    </div>
+</div>

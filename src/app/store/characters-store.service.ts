@@ -32,8 +32,8 @@ export class CharactersStoreService {
   addCharacter(newCharacter: ICharacter) {
     // we assign a new copy of  by adding a new character to it 
     this.characters = [
-      ...this.characters, 
-      newCharacter
+      newCharacter,
+      ...this.characters
     ];
   }
 

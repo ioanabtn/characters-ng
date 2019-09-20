@@ -93,24 +93,4 @@ export class CharacterComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-  addLine(newLine: string) {
-    if (!newLine) {
-      return
-    }
-    if (this.character.lines && this.character.lines.length) {
-      this.character.lines = [
-        ...this.character.lines,
-        newLine
-      ];
-    } else {
-      this.character.lines = [newLine];
-    }
-    
-  }
-
-  deleteLine(oldLine: string) {
-    this.character.lines = this.character.lines.filter(line => oldLine !== line);
-  }
-
 }
