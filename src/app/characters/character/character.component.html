@@ -10,11 +10,11 @@
         <div class="row">
             <div class="col-md-6 text-center">Side:</div>
             <div class="col-md-3">
-                <div *ngIf="character.side == 'dark' ">
+                <div *ngIf="character.side.toString()  == 'dark' ">
                     <img src="./assets/images/dark.png" class="rounded mx-auto d-block"
                         style="max-height:100px;padding-bottom:10px" title='dark' />
                 </div>
-                <div *ngIf="character.side == 'light'">
+                <div *ngIf="character.side.toString() == 'light'">
                     <img src="./assets/images/light.png" class="rounded mx-auto d-block"
                         style="max-height:100px;padding-bottom:10px" title='light' />
                 </div>

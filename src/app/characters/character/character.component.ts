@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICharacter } from '../character';
+import { ICharacter, ICharacterResolved } from '../character';
 import { CharacterService } from '../character.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
@@ -27,17 +27,16 @@ export class CharacterComponent implements OnInit, OnDestroy {
     public charactersStore: CharactersStoreService) { }
 
   ngOnInit(): void {
-    // let id = +this.route.snapshot.paramMap.get('id'); or
-    this.subscription.add(this.route.paramMap.
-      subscribe(params => {
-        const id = +params.get('id');
-        this.subscription.add(this.characterService.getCharacter(id)
-          .subscribe({
-            next: character => this.character = character
-          })
-        );
-      })
-    );
+    const resolvedData: ICharacterResolved = this.route.snapshot.data['resolvedData'];
+    this.onCharacterRetrieved(resolvedData.character);
+  }
+
+  onCharacterRetrieved(character: ICharacter): void {
+    this.character = character;
+
+    if (this.character) {
+      this.pageTitle += `: ${this.character.name}`;
+    }
   }
 
   onBack(): void {
@@ -50,7 +49,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   openDialog(character: ICharacter): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { id: character.id, name: character.name, side: character.side }
+      data: { id: character.id, name: character.name, side: character.side, lines: character.lines }
     });
 
     this.subscription.add(dialogRef.afterClosed()
