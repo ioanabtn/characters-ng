@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-4">Name:</div>
+    <div class="col-md-8">{{character.name}}</div>
+</div>
+<div class="row">
+    <div class="col-md-4">Side:</div>
+    <div class="col-md-8">
+        <div *ngIf="character.side.toString()  == 'dark' ">
+            <img src="./assets/images/dark.png" style="max-height:100px;padding-bottom:10px" title='dark' />
+        </div>
+        <div *ngIf="character.side.toString() == 'light'">
+            <img src="./assets/images/light.png" style="max-height:100px;padding-bottom:10px" title='light' />
+        </div>
+    </div>
+</div>

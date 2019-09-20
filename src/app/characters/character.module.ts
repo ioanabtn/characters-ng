@@ -7,12 +7,25 @@ import { CharacterComponent } from './character/character.component';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { CharacterResolver } from './character-resolver.service';
+import { BasicInfoComponent } from './character/basic-info.component';
+import { LinesComponent } from './character/lines.component';
 
 const routes = [
     { path: 'characters', component: CharacterListComponent },
     {
         path: 'characters/:id', component: CharacterComponent,
-        resolve: { resolvedData: CharacterResolver }
+        resolve: { resolvedData: CharacterResolver },
+        children: [
+            {
+                path: '', redirectTo: 'info', pathMatch: 'full'
+            },
+            {
+                path: 'info', component: BasicInfoComponent
+            },
+            {
+                path: 'lines', component: LinesComponent
+            }
+        ]
     }
 ]
 @NgModule({
@@ -27,6 +40,8 @@ const routes = [
         CharacterComponent,
         ModalComponent,
         DeleteConfirmDialogComponent,
+        BasicInfoComponent,
+        LinesComponent
     ]
 })
 export class CharacterModule { }
