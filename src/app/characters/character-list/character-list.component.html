@@ -17,7 +17,7 @@
                     </select>
                 </div>
                 <button type="button" class="btn btn-primary"
-                    (click)="addCharacter(characterName.value); characterName.value=''; selectedSide=none">
+                    (click)="addCharacter(characterName.value); characterName.value='';">
                     Add Character
                 </button>
             </form>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class='table-responsive'>
-            <table class='table' *ngIf="charactersStore.characters && charactersStore.characters.length">
+            <table class='table' *ngIf="filteredCharacters && filteredCharacters.length">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -45,10 +45,10 @@
                         <th class='iw-centered'>Actions</th>
                     </tr>
                 </thead>
-                <tbody *ngIf="charactersStore.characters$">
+                <tbody *ngIf="filteredCharacters">
                     <tr *ngFor='let character of filteredCharacters'>
                         <td>
-                            <a [routerLink]="['/characters', character.id]">
+                            <a [routerLink]="['/characters', character.id]" [queryParams]="{ filterBy: listFilter }">
                                 {{character.name}}
                             </a>
                         </td>

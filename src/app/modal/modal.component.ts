@@ -9,7 +9,7 @@ import { Side } from '../shared/side';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  private sides;
+  sides: string[];
   constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ICharacter

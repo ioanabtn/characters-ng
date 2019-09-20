@@ -6,10 +6,14 @@ import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialo
 import { CharacterComponent } from './character/character.component';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
+import { CharacterResolver } from './character-resolver.service';
 
 const routes = [
     { path: 'characters', component: CharacterListComponent },
-    { path: 'characters/:id', component: CharacterComponent }
+    {
+        path: 'characters/:id', component: CharacterComponent,
+        resolve: { resolvedData: CharacterResolver }
+    }
 ]
 @NgModule({
     imports: [

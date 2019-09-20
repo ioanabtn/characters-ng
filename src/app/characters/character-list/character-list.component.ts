@@ -8,6 +8,7 @@ import { CharactersStoreService } from 'src/app/store/characters-store.service';
 import { Side } from 'src/app/shared/side';
 import { Subscription } from 'rxjs';
 import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialog/delete-confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './character-list.component.html',
@@ -15,15 +16,12 @@ import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialo
 })
 export class CharacterListComponent implements OnInit, OnDestroy {
   pageTitle: string = 'Character List';
-  characters: ICharacter[] = [];
   errorMessage: string = '';
-  private sides: any;
-  private selectedSide: Side;
-  private subscription: Subscription = new Subscription();
+  sides: any;
+  selectedSide: Side;
+  subscription: Subscription = new Subscription();
 
-  filteredCharacters: ICharacter[] = [];
-
-  _listFilter = '';
+  _listFilter: string = '';
   get listFilter(): string {
     return this._listFilter;
   }
@@ -33,20 +31,24 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     this.filteredCharacters = this.listFilter ? this.performFilter(this.listFilter) : this.charactersStore.characters;
   }
 
+  filteredCharacters: ICharacter[] = [];
 
   constructor(
     private characterService: CharacterService,
     public dialog: MatDialog,
-    public charactersStore: CharactersStoreService
+    public charactersStore: CharactersStoreService,
+    private route: ActivatedRoute
   ) {
     this.sides = [Side[0].toLocaleLowerCase(), Side[1].toLocaleLowerCase()];
   }
 
   ngOnInit(): void {
+    this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
+
     this.subscription.add(this.characterService.getCharacters().subscribe({
       next: characters => {
-        this.filteredCharacters = characters;
         this.charactersStore.characters = characters;
+        this.filteredCharacters = this.performFilter(this.listFilter);
       },
       error: err => this.errorMessage = err
     })
@@ -64,11 +66,11 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     if (!characterName) {
       return
     }
-    console.log({ name: characterName, side: this.selectedSide })
     this.subscription.add(this.characterService.addCharacter({ name: characterName, side: this.selectedSide } as ICharacter)
       .subscribe({
         next: character => {
           this.charactersStore.addCharacter(character);
+          this.filteredCharacters = this.performFilter(this.listFilter);
           console.log(character);
         },
         error: err => this.errorMessage = err

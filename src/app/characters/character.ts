@@ -6,3 +6,8 @@ export interface ICharacter {
     side: Side;
     lines: string[];
 }
+
+export interface ICharacterResolved {
+    character: ICharacter;
+    error?: any; //optional error
+}
