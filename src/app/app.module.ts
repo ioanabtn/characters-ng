@@ -23,7 +23,8 @@ import { UsersModule } from './users/users.module';
     InMemoryWebApiModule.forRoot(InMemoryStoreService),
     BrowserAnimationsModule,
     UsersModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

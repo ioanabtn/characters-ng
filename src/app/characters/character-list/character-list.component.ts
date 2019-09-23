@@ -106,14 +106,15 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ModalComponent, {
       data: { id: character.id, name: character.name, side: character.side }
     });
-
     this.subscription.add(dialogRef.afterClosed()
       .pipe(
         map(updatedCharacter => {
-          if (updatedCharacter) {
+          if (updatedCharacter.name && updatedCharacter.side) {
             let index = this.charactersStore.characters.indexOf(character);
+            let indexFiltered = this.filteredCharacters.indexOf(character);
             if (~index) {
               this.charactersStore.characters[index] = updatedCharacter;
+              this.filteredCharacters[indexFiltered] = updatedCharacter;
             }
             this.subscription.add(this.characterService.updateCharacter(updatedCharacter)
               .subscribe({

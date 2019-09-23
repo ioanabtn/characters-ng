@@ -13,15 +13,10 @@
         </div>
         <router-outlet></router-outlet>
         <hr>
-        <div class="row actions text-center">
+        <div class="row actions">
             <div class="col-md-4 mt-1">
                 <button class="btn btn-outline-secondary" [routerLink]="['/characters']" queryParamsHandling="preserve">
                     <i class="fa fa-chevron-left"></i> Back
-                </button>
-            </div>
-            <div class="col-md-4 mt-1">
-                <button class="btn btn-outline-primary" (click)="openDialog(character)">
-                    <i class="fa fa-edit"></i> Edit
                 </button>
             </div>
             <div class="col-md-4 mt-1">

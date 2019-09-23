@@ -8,6 +8,7 @@ import { CharactersStoreService } from 'src/app/store/characters-store.service';
 import { ModalComponent } from 'src/app/modal/modal.component';
 import { map } from 'rxjs/operators';
 import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialog/delete-confirm-dialog.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   templateUrl: './character.component.html',
@@ -27,8 +28,12 @@ export class CharacterComponent implements OnInit, OnDestroy {
     public charactersStore: CharactersStoreService) { }
 
   ngOnInit(): void {
-    const resolvedData: ICharacterResolved = this.route.snapshot.data['resolvedData'];
-    this.onCharacterRetrieved(resolvedData.character);
+    this.route.data.subscribe(
+      data => {
+        const resolvedData: ICharacterResolved = data['resolvedData'];
+        this.onCharacterRetrieved(resolvedData.character);
+      }
+    )
   }
 
   onCharacterRetrieved(character: ICharacter): void {
@@ -47,32 +52,9 @@ export class CharacterComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  openDialog(character: ICharacter): void {
-    const dialogRef = this.dialog.open(ModalComponent, {
-      data: { id: character.id, name: character.name, side: character.side, lines: character.lines }
-    });
-
-    this.subscription.add(dialogRef.afterClosed()
-      .pipe(
-        map(updatedCharacter => {
-          if (updatedCharacter) {
-            this.character = updatedCharacter;
-            this.subscription.add(this.characterService.updateCharacter(updatedCharacter)
-              .subscribe({
-                error: err => this.errorMessage = err
-              })
-            );
-          }
-        })
-      ).subscribe({
-        error: err => this.errorMessage = err
-      })
-    );
-  }
-
   delete(character: ICharacter): void {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: { id: character.id, name: character.name, side: character.side }
+      data: { id: character.id, name: character.name }
     });
 
     this.subscription.add(dialogRef.afterClosed()
