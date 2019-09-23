@@ -104,7 +104,7 @@ export class CharacterListComponent implements OnInit, OnDestroy {
 
   openDialog(character: ICharacter): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { id: character.id, name: character.name, side: character.side }
+      data: { id: character.id, name: character.name, side: character.side, lines: character.lines }
     });
     this.subscription.add(dialogRef.afterClosed()
       .pipe(
