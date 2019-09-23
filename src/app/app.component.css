@@ -10,3 +10,7 @@
 
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown-content a:hover {background-color: #ddd;}
+
+.navbar-light .navbar-nav .nav-link.active {
+    color: #007ACC;
+}

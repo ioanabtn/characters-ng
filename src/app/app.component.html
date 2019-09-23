@@ -3,8 +3,9 @@
   <div class="nav nav-pills dropdown">
     <button class="btn ">Menu</button>
     <div class="dropdown-content">
-      <a class='nav-link' [routerLink]="['/home']">Home</a>
-      <a class='nav-link' [routerLink]="['/characters']">Character List</a>
+      <a class='nav-link' [routerLink]="['/home']" routerLinkActive="active">Home</a>
+      <a class='nav-link' [routerLink]="['/characters']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">Character List</a>
     </div>
   </div>
   <ul class='navbar-nav ml-auto'>
@@ -17,6 +18,6 @@
     <li *ngIf='isLoggedIn' class='nav-item'><a class='nav-link' (click)="logOut()">Log Out</a></li>
   </ul>
 </nav>
-<div class='container'>
-  <router-outlet></router-outlet>
+<div class='container' [@slideInAnimation]="o.isActivated ? o.activatedRoute : ''">
+  <router-outlet #o="outlet"></router-outlet>
 </div>

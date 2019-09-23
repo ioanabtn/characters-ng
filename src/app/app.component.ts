@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from './users/auth.service';
 import { Router } from '@angular/router';
+import { slideInAnimation } from './shared/app.animation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [slideInAnimation]
 })
 export class AppComponent {
   pageTitle = 'Story Tracker';
