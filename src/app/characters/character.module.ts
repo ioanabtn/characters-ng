@@ -9,9 +9,10 @@ import { CommonModule } from '@angular/common';
 import { CharacterResolver } from './character-resolver.service';
 import { BasicInfoComponent } from './character/basic-info.component';
 import { LinesComponent } from './character/lines.component';
+import { AuthGuard } from '../users/auth.guard';
 
 const routes = [
-    { path: 'characters', component: CharacterListComponent },
+    { path: 'characters', canActivate: [AuthGuard], component: CharacterListComponent },
     {
         path: 'characters/:id', component: CharacterComponent,
         resolve: { resolvedData: CharacterResolver },
