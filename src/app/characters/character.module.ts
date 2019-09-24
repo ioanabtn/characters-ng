@@ -12,19 +12,27 @@ import { LinesComponent } from './character/lines.component';
 import { AuthGuard } from '../users/auth.guard';
 
 const routes = [
-    { path: 'characters', canActivate: [AuthGuard], component: CharacterListComponent },
     {
-        path: 'characters/:id', component: CharacterComponent,
-        resolve: { resolvedData: CharacterResolver },
+        path: 'characters', canActivate: [AuthGuard],
         children: [
             {
-                path: '', redirectTo: 'info', pathMatch: 'full'
+                path: '',
+                component: CharacterListComponent,
             },
             {
-                path: 'info', component: BasicInfoComponent
-            },
-            {
-                path: 'lines', component: LinesComponent
+                path: ':id', component: CharacterComponent,
+                resolve: { resolvedData: CharacterResolver },
+                children: [
+                    {
+                        path: '', redirectTo: 'info', pathMatch: 'full'
+                    },
+                    {
+                        path: 'info', component: BasicInfoComponent
+                    },
+                    {
+                        path: 'lines', component: LinesComponent
+                    }
+                ]
             }
         ]
     }
