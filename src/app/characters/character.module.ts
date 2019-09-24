@@ -13,26 +13,21 @@ import { AuthGuard } from '../users/auth.guard';
 
 const routes = [
     {
-        path: 'characters', canActivate: [AuthGuard],
+        path: '',
+        component: CharacterListComponent,
+    },
+    {
+        path: ':id', component: CharacterComponent,
+        resolve: { resolvedData: CharacterResolver },
         children: [
             {
-                path: '',
-                component: CharacterListComponent,
+                path: '', redirectTo: 'info', pathMatch: 'full'
             },
             {
-                path: ':id', component: CharacterComponent,
-                resolve: { resolvedData: CharacterResolver },
-                children: [
-                    {
-                        path: '', redirectTo: 'info', pathMatch: 'full'
-                    },
-                    {
-                        path: 'info', component: BasicInfoComponent
-                    },
-                    {
-                        path: 'lines', component: LinesComponent
-                    }
-                ]
+                path: 'info', component: BasicInfoComponent
+            },
+            {
+                path: 'lines', component: LinesComponent
             }
         ]
     }
