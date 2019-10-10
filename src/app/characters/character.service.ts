@@ -2,55 +2,71 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICharacter } from './character';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
+
+import { CharacterAdapter } from '../shared/character.adapter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
-  //mock url
-  private url: string = 'http://localhost:8080/api/characters';
+  private url: string = 'vfdkv';
+  private baseUrl: string = 'http://localhost:3000/api/characters';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private adapter: CharacterAdapter
   ) { }
 
   getCharacters(): Observable<ICharacter[]> {
-    return this.http.get<ICharacter[]>(this.url)
-      .pipe(
-        tap(data => console.log('All characters are loaded! '))
-      );
+    const url = `${this.baseUrl}/`;
+    return this.http.get(url).pipe(
+      map((data: any[]) => data.map(item =>
+        this.adapter.adapt(item))),
+      tap(data => console.log(data))
+    )
   }
 
-  getCharacter(id: number): Observable<ICharacter> {
-    return this.http.get<ICharacter>(`${this.url}/${id}`)
+  getCharacter(id: string): Observable<ICharacter> {
+    return this.http.get(`${this.baseUrl}/${id}/`)
       .pipe(
-        tap(data => console.log(`Hero with ${id} is ${JSON.stringify(data)}`))
+        map((data: any) => 
+          this.adapter.adaptOne(data)
+        ),
+        tap(data => console.log(`Character with ${id} is ${JSON.stringify(data)}`))
       );
   }
 
   addCharacter(character: ICharacter): Observable<ICharacter> {
-    return this.http.post<ICharacter>(this.url, character, this.httpOptions)
+    const url = `${this.baseUrl}/`;
+    return this.http.post(url, character, this.httpOptions)
       .pipe(
+        map((data: any) => 
+        this.adapter.adaptOne(data)
+      ),
         tap(data => console.log(`New character was added w/ id=${data.id}`))
       );
   }
 
-  deleteCharacter(character: ICharacter | number): Observable<ICharacter> {
-    const id = typeof character === "number" ? character : character.id;
+  deleteCharacter(character: ICharacter): Observable<ICharacter> {
+    const id = character.id;
+    const rev = character.rev;
 
-    return this.http.delete<ICharacter>(`${this.url}/${id}`, this.httpOptions)
+  return this.http.delete<ICharacter>(`${this.baseUrl}/${id}/${rev}`, this.httpOptions)
       .pipe(
         tap(_ => console.log(`Deleted hero w/ id ${id}`))
       );
   }
 
   updateCharacter(character: ICharacter): Observable<any> {
-    return this.http.put<ICharacter>(this.url, character, this.httpOptions)
+    const id = character.id;
+    const rev = character.rev;
+    
+    return this.http.put<ICharacter>(`${this.baseUrl}/${id}/${rev}`, character, this.httpOptions)
       .pipe(
         tap(_ => console.log(`Character with ${character.id} was updated`))
       );

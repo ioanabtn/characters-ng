@@ -19,7 +19,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(InMemoryStoreService),
+    // InMemoryWebApiModule.forRoot(InMemoryStoreService),
     BrowserAnimationsModule,
     UsersModule,
     AppRoutingModule,

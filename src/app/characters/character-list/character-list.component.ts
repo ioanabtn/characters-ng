@@ -69,9 +69,13 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     this.subscription.add(this.characterService.addCharacter({ name: characterName, side: this.selectedSide } as ICharacter)
       .subscribe({
         next: character => {
-          this.charactersStore.addCharacter(character);
-          this.filteredCharacters = this.performFilter(this.listFilter);
-          console.log(character);
+          this.subscription.add(this.characterService.getCharacters().subscribe({
+            next: characters => {
+              this.charactersStore.characters = characters;
+              this.filteredCharacters = this.performFilter(this.listFilter);
+            },
+            error: err => this.errorMessage = err
+          }));
         },
         error: err => this.errorMessage = err
       })
@@ -80,7 +84,7 @@ export class CharacterListComponent implements OnInit, OnDestroy {
 
   deleteCharacter(character: ICharacter): void {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: { id: character.id, name: character.name, side: character.side }
+      data: { id: character.id, rev: character.rev, name: character.name, side: character.side }
     });
 
     this.subscription.add(dialogRef.afterClosed()
@@ -104,7 +108,7 @@ export class CharacterListComponent implements OnInit, OnDestroy {
 
   openDialog(character: ICharacter): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { id: character.id, name: character.name, side: character.side, lines: character.lines }
+      data: { id: character.id, rev: character.rev, name: character.name, side: character.side, lines: character.lines }
     });
     this.subscription.add(dialogRef.afterClosed()
       .pipe(

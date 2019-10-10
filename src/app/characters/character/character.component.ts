@@ -5,10 +5,8 @@ import { CharacterService } from '../character.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { CharactersStoreService } from 'src/app/store/characters-store.service';
-import { ModalComponent } from 'src/app/modal/modal.component';
 import { map } from 'rxjs/operators';
 import { DeleteConfirmDialogComponent } from 'src/app/modal/delete-confirm-dialog/delete-confirm-dialog.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   templateUrl: './character.component.html',
@@ -48,13 +46,9 @@ export class CharacterComponent implements OnInit, OnDestroy {
     this.router.navigate(['/characters']);
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   delete(character: ICharacter): void {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: { id: character.id, name: character.name }
+      data: { id: character.id, rev: character.rev, name: character.name }
     });
 
     this.subscription.add(dialogRef.afterClosed()
@@ -62,17 +56,21 @@ export class CharacterComponent implements OnInit, OnDestroy {
         map(toDeleteCharacter => {
           if (toDeleteCharacter) {
             this.charactersStore.removeCharacter(character.id);
-            this.subscription.add(this.characterService.deleteCharacter(character)
+            this.subscription.add(this.characterService.deleteCharacter(toDeleteCharacter)
               .subscribe({
-                error: err => this.errorMessage = err
+                error: err => this.errorMessage = err,
+                complete: () => this.onBack()
               })
             );
-            this.onBack();
           }
         })
       ).subscribe({
         error: err => this.errorMessage = err
       })
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
