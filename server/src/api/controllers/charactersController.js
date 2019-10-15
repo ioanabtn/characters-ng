@@ -14,17 +14,16 @@ const couch = new NodeCouchDb({
 const dbName = 'characters';
 const viewUrl = '_design/all_characters/_view/all';
 
+const charactersService = require('../services/charactersService');
+
 async function handleGetAllCharacters(req, res, next) {
     try {
-        await couch.get(dbName, viewUrl).then(
-            function (data, headers, status) {
-                console.log(data.data.rows);
-                res.send(data.data.rows);
-            },
-            function (err) {
-                res.send(err);
-            }
-        )
+        await charactersService.getCharacters().then(characters => {
+            // console.log(characters.rows);
+            // const allCharacters = characters.rows.map(character => character.doc);
+            // console.log(allCharacters)
+            return res.status(200).send(characters.rows)
+        })
     } catch (error) {
         const customError = {
             message: "Error while trying to get all characters",
@@ -36,25 +35,13 @@ async function handleGetAllCharacters(req, res, next) {
 }
 
 async function handleCreateCharacter(req, res, next) {
-    const character = req.body;
-
     try {
-        await couch.insert(dbName, {
-            name: character.name,
-            side: character.side,
-            lines: character.lines
-        }).then(
-            function (data, headers, status) {
-                res.send(data.data)
-            },
-            function (err) {
-                res.send(err);
-            }
-
-        )
+        await charactersService.insertCharacter(req.body).then(character => {
+            res.status(201).send(character);
+        });
     } catch (error) {
         const customError = {
-            message: "Error while trying to get all characters",
+            message: "Error while trying to insert character",
             status: 500,
             error: error
         }
@@ -66,18 +53,12 @@ async function handleDeleteCharacter(req, res, next) {
     const { id, rev } = req.params;
 
     try {
-        await couch.del(dbName, id, rev).then(
-            function (data, headers, status) {
-                res.send(data.data)
-            },
-            function (err) {
-                res.send(err);
-            }
-
-        )
+        await charactersService.destroyCharacter(id, rev).then(character => {
+            res.status(200).json(character);
+        });
     } catch (error) {
         const customError = {
-            message: "Error while trying to get all characters",
+            message: "Error while trying to delete the character",
             status: 500,
             error: error
         }
@@ -90,21 +71,9 @@ async function handleUpdateCharacter(req, res, next) {
 
     console.log(req.body.name, req.body.side, req.body.lines)
     try {
-        await couch.update(dbName, {
-            _id: id, 
-            _rev: rev, 
-            name: req.body.name, 
-            side: req.body.side, 
-            lines: req.body.lines
-        }).then(
-            function (data, headers, status) {
-                res.send(data.data)
-            },
-            function (err) {
-                res.send(err);
-            }
-
-        )
+        await charactersService.updateCharacter(id, rev, req.body).then(character => {
+            res.status(200).send(character);
+        })
     } catch (error) {
         const customError = {
             message: "Error while trying to get all characters",
@@ -117,20 +86,14 @@ async function handleUpdateCharacter(req, res, next) {
 
 async function handleGetCharacterById(req, res, next) {
     const { id } = req.params;
-    
-    try {
-        await couch.get(dbName, id).then(
-            function (data, headers, status) {
-                res.send(data.data)
-            },
-            function (err) {
-                res.send(err);
-            }
 
-        )
+    try {
+        charactersService.getCharacterById(id).then(character => {
+            res.status(200).send(character);
+        })
     } catch (error) {
         const customError = {
-            message: "Error while trying to get all characters",
+            message: "Error while trying to get the character",
             status: 500,
             error: error
         }

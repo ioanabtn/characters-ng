@@ -10,7 +10,6 @@ import { CharacterAdapter } from '../shared/character.adapter';
   providedIn: 'root'
 })
 export class CharacterService {
-  private url: string = 'vfdkv';
   private baseUrl: string = 'http://localhost:3000/api/characters';
 
   httpOptions = {
@@ -25,9 +24,9 @@ export class CharacterService {
   getCharacters(): Observable<ICharacter[]> {
     const url = `${this.baseUrl}/`;
     return this.http.get(url).pipe(
-      map((data: any[]) => data.map(item =>
-        this.adapter.adapt(item))),
-      tap(data => console.log(data))
+      map((data: any[]) => 
+        data.map((item: any) => this.adapter.adapt(item))),
+      tap(data => console.log(`Data is in fe: ${data}`))
     )
   }
 

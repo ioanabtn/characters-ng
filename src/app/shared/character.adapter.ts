@@ -13,13 +13,14 @@ export class CharacterAdapter implements Adapter<ICharacter> {
             rev: item.value.rev,
             name: item.value.name,
             side: item.value.side,
-            lines: item.value.lines
+            lines: item.value.lines ? item.value.lines : []
         }
-
+        console.log(adaptee);
         return adaptee;
     }
 
     adaptOne(item: any): ICharacter {
+        console.log(item);
         const adaptee: ICharacter = {
             id: item._id,
             rev: item._rev,

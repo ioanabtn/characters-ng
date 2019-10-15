@@ -5,6 +5,10 @@ const express = require('express');
 const path = require('path');
 const config = require('./config');
 const api = require('./api/index');
+const passport = require('passport');
+
+//passpoer config
+require('./passport')(passport);
 
 const app = express();
 
@@ -16,6 +20,9 @@ module.exports = async function main() {
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, 'views'));
     app.set('config', config);
+
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     app.use('/api', api.router);
 

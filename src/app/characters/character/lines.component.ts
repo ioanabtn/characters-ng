@@ -42,35 +42,31 @@ export class LinesComponent implements OnInit, OnDestroy {
     }
     this.subscription.add(this.characterService.updateCharacter(this.character)
       .subscribe({
+        next: (character) => {
+          console.log(character);
+          this.characterService.getCharacter(character.id).subscribe({
+            next: (newCharacter) => this.character = newCharacter,
+            error: err => this.errorMessage = err
+          })
+        },
         error: err => this.errorMessage = err,
         complete: () => this.lines = this.character.lines
       })
     );
   }
 
-  // addLine(newLine: string) {
-  //   if (!newLine) {
-  //     return
-  //   }
-  //   if (this.lines && this.lines.length) {
-  //     this.lines = [
-  //       ...this.lines,
-  //       newLine
-  //     ];
-  //   } else {
-  //     this.lines = [newLine];
-  //   }
-
-  // }
-
   deleteLine(oldLine: string) {
     this.character.lines = this.character.lines.filter(line => oldLine !== line);
     console.log(this.character)
     this.subscription.add(this.characterService.updateCharacter(this.character)
-      .pipe(
-        retry(1)
-      )
       .subscribe({
+        next: (character) => {
+          console.log(character);
+          this.characterService.getCharacter(character.id).subscribe({
+            next: (newCharacter) => this.character = newCharacter,
+            error: err => this.errorMessage = err
+          })
+        }, 
         error: err => this.errorMessage = err,
         complete: () => this.lines = this.character.lines
       })

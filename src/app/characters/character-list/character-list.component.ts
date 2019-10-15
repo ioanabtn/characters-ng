@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, ModuleWithComponentFactories } from '@angular/core';
 import { ICharacter } from '../character';
 import { CharacterService } from '../character.service';
 import { MatDialog } from '@angular/material';
@@ -122,6 +122,15 @@ export class CharacterListComponent implements OnInit, OnDestroy {
             }
             this.subscription.add(this.characterService.updateCharacter(updatedCharacter)
               .subscribe({
+                next: () => {
+                  this.characterService.getCharacters().subscribe({
+                    next: characters => {
+                      this.charactersStore.characters = characters;
+                      this.filteredCharacters = this.performFilter(this.listFilter);
+                    },
+                    error: err => this.errorMessage = err
+                })
+              },
                 error: err => this.errorMessage = err
               })
             );
